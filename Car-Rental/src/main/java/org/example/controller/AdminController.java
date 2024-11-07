@@ -1,11 +1,15 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.model.BookACarDto;
 import org.example.model.CarDto;
+import org.example.model.SearchACarDto;
 import org.example.service.admin.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -30,7 +34,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/car/{id}")
-    public ResponseEntity<Void> deleteCar(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteCar(@PathVariable Long id){
         adminService.deleteCar(id);
         return ResponseEntity.ok(null);
     }
@@ -45,5 +49,24 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/bookings")
+    public ResponseEntity<List<BookACarDto>> getBookings(){
+        System.out.println(adminService.getBookings());
+        return ResponseEntity.ok(adminService.getBookings());
+    }
 
+    @GetMapping("/car/search")
+    public ResponseEntity<List<CarDto>> searchCar(@ModelAttribute SearchACarDto searchACarDto){
+        if(searchACarDto.getMethod().equals("Brand")){
+            return ResponseEntity.ok((adminService.getCarByBrand(searchACarDto.getType())));
+        }else if(searchACarDto.getMethod().equals("Fuel Type")){
+            return ResponseEntity.ok((adminService.getCarByTypeFuel(searchACarDto.getType())));
+        } else if (searchACarDto.getMethod().equals("Color")) {
+            return ResponseEntity.ok((adminService.getCarByColor(searchACarDto.getType())));
+        } else if (searchACarDto.getMethod().equals("Transmission")) {
+            return ResponseEntity.ok((adminService.getCarByTransmission(searchACarDto.getType())));
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 }

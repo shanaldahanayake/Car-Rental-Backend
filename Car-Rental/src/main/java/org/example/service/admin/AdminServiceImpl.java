@@ -3,18 +3,23 @@ package org.example.service.admin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.CarEntity;
+import org.example.entity.BookACarEntity;
+import org.example.model.BookACarDto;
 import org.example.model.CarDto;
+import org.example.repository.BookACarRepository;
 import org.example.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService{
     private final CarRepository repository;
     private final ObjectMapper mapper;
+    private final BookACarRepository bookACarRepository;
 
     @Override
     public boolean postCar(CarDto dto) {
@@ -46,7 +51,7 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public void deleteCar(Integer id) {
+    public void deleteCar(Long id) {
         repository.deleteById(id);
     }
 
@@ -66,6 +71,56 @@ public class AdminServiceImpl implements AdminService{
         }catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    public List<BookACarDto> getBookings() {
+        List<BookACarDto> bookACarDtos = new ArrayList<>();
+
+        for (BookACarEntity bookACarEntity : bookACarRepository.findAll()) {
+            bookACarDtos.add(bookACarEntity.getBookACarDto());
+        }
+        return bookACarDtos;
+    }
+
+    @Override
+    public List<CarDto> getCarByBrand(String brand) {
+        List<CarDto> carDtos=new ArrayList<>();
+
+        repository.findAllByBrand(brand).forEach(car->{
+            carDtos.add(mapper.convertValue(car, CarDto.class));
+        });
+        return  carDtos;
+    }
+
+    @Override
+    public List<CarDto> getCarByColor(String color) {
+        List<CarDto> carDtos=new ArrayList<>();
+
+        repository.findAllByColor(color).forEach(car->{
+            carDtos.add(mapper.convertValue(car, CarDto.class));
+        });
+        return  carDtos;
+    }
+
+    @Override
+    public List<CarDto> getCarByTransmission(String transmission) {
+        List<CarDto> carDtos=new ArrayList<>();
+
+        repository.findAllByTransmission(transmission).forEach(car->{
+            carDtos.add(mapper.convertValue(car, CarDto.class));
+        });
+        return  carDtos;
+    }
+
+    @Override
+    public List<CarDto> getCarByTypeFuel(String fuel) {
+        List<CarDto> carDtos=new ArrayList<>();
+
+        repository.findAllByTypeFuel(fuel).forEach(car->{
+            carDtos.add(mapper.convertValue(car, CarDto.class));
+        });
+        return  carDtos;
     }
 
 
