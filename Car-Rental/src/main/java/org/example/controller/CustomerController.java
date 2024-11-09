@@ -24,6 +24,7 @@ public class CustomerController {
 
     @PostMapping("/car/book")
     public ResponseEntity<Object> bookACar(@RequestBody BookACarDto bookACarDto){
+
         try{
             boolean b = customerService.bookACar(bookACarDto);
             if(b){

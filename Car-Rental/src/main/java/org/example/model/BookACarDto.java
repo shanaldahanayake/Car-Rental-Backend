@@ -17,8 +17,8 @@ public class BookACarDto {
     private Long days;
     private Double price;
     private BookStatus bookStatus;
-    private Long carEntityId;
-    private Long userEntityId;
+    private Long carId;
+    private Long userId;
     private String username;
     private String email;
 }

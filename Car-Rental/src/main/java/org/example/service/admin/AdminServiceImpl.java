@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.CarEntity;
 import org.example.entity.BookACarEntity;
+import org.example.enums.BookStatus;
 import org.example.model.BookACarDto;
 import org.example.model.CarDto;
 import org.example.repository.BookACarRepository;
@@ -12,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -122,6 +124,23 @@ public class AdminServiceImpl implements AdminService{
         });
         return  carDtos;
     }
+
+    @Override
+    public void respondBooking(Long id, String status) {
+        Optional<BookACarEntity> carEntity = bookACarRepository.findById(id);
+        if(carEntity.isPresent()){
+            BookACarEntity bookACarEntity = carEntity.get();
+
+            if(Objects.equals(status,"APPROVED")){
+                bookACarEntity.setBookStatus(BookStatus.APPROVED);
+            }else{
+                bookACarEntity.setBookStatus(BookStatus.REJECTED);
+            }
+            bookACarRepository.save(bookACarEntity);
+        }
+    }
+
+
 
 
 }

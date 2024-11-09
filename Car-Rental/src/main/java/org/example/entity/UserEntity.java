@@ -2,6 +2,7 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.example.enums.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "users")
+@ToString
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

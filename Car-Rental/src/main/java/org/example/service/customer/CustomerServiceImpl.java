@@ -42,8 +42,8 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public boolean bookACar(BookACarDto bookACarDto) throws ParseException {
-        Optional<CarEntity> carEntity = repository.findById(bookACarDto.getCarEntityId());
-        Optional<UserEntity> userEntity = userRepository.findById(bookACarDto.getUserEntityId());
+        Optional<CarEntity> carEntity = repository.findById(bookACarDto.getCarId());
+        Optional<UserEntity> userEntity = userRepository.findById(bookACarDto.getUserId());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 
@@ -77,17 +77,13 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public List<BookACarDto> getBookingByUserId(Long userId) {
-
         List<BookACarDto> carDtos=new ArrayList<>();
 
-        bookACarRepository.findAllByUserEntityId(userId).forEach(element->{
-            carDtos.add(mapper.convertValue(element, BookACarDto.class));
-        });
+            for (BookACarEntity bookACarEntity : bookACarRepository.findAllByUserEntityId(userId)) {
+                carDtos.add(bookACarEntity.getBookACarDto());
+            }
+        return carDtos;
 
-/*
-        return bookACarRepository.findAllByUserId(userId).stream().map(BookACarEntity::getBookACarDto).collect(Collectors.toList());
-        */
-    return null;
     }
 
 }

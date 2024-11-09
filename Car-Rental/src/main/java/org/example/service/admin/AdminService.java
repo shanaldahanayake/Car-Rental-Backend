@@ -1,6 +1,7 @@
 package org.example.service.admin;
 
 import org.example.entity.CarEntity;
+import org.example.enums.BookStatus;
 import org.example.model.BookACarDto;
 import org.example.model.CarDto;
 
@@ -21,5 +22,5 @@ public interface AdminService {
     List<CarDto> getCarByColor(String color);
     List<CarDto> getCarByTransmission(String transmission);
     List<CarDto> getCarByTypeFuel(String fuel);
-
+    void respondBooking(Long id, String status);
 }

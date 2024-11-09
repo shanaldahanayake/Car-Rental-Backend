@@ -21,21 +21,6 @@ import java.util.List;
 public class AuthServiceImpl implements  AuthService {
     private final UserRepository userRepository;
 
-
-    @PostConstruct
-    public void createAdminAccount(){
-        UserEntity dto=userRepository.findFirstByUserRole(UserRole.ADMIN);
-        if(dto==null){
-            UserEntity newAdmin=new UserEntity();
-            newAdmin.setName("Admin");
-            newAdmin.setEmail("admin@test.com");
-            newAdmin.setPassword(new BCryptPasswordEncoder().encode("admin"));
-            newAdmin.setUserRole(UserRole.ADMIN);
-            userRepository.save(newAdmin);
-            System.out.println("Success");
-        }
-    }
-
     @Override
     public UserDto createCustomer(SignupRequestDto signupRequestDto) {
         UserEntity user=new UserEntity();
@@ -58,6 +43,4 @@ public class AuthServiceImpl implements  AuthService {
     public UserEntity findFirstByEmail(String email) {
         return userRepository.findFirstByEmail(email);
     }
-
-
 }

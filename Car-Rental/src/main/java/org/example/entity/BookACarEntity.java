@@ -16,6 +16,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "bookACar")
+@ToString
 public class BookACarEntity {
 
     @Id
@@ -49,8 +50,8 @@ public class BookACarEntity {
         bookACarDto.setFromDate(getFromDate());
         bookACarDto.setEmail(userEntity.getEmail());
         bookACarDto.setUsername(userEntity.getUsername());
-        bookACarDto.setUserEntityId(userEntity.getId());
-        bookACarDto.setCarEntityId(carEntity.getId());
+        bookACarDto.setUserId(userEntity.getId());
+        bookACarDto.setCarId(carEntity.getId());
         return bookACarDto;
     }
 }

@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.enums.BookStatus;
 import org.example.model.BookACarDto;
 import org.example.model.CarDto;
 import org.example.model.SearchACarDto;
@@ -18,7 +19,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/car")
-    public ResponseEntity<?> postCar(@ModelAttribute CarDto carDto){
+    public ResponseEntity<?> postCar(@RequestBody CarDto carDto){
         boolean success=adminService.postCar(carDto);
         if(success){
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -30,7 +31,6 @@ public class AdminController {
     @GetMapping("/car")
     public ResponseEntity<?> getAllCars(@ModelAttribute CarDto carDto){
         return ResponseEntity.ok(adminService.getAllCars());
-
     }
 
     @DeleteMapping("/car/{id}")
@@ -51,7 +51,6 @@ public class AdminController {
 
     @GetMapping("/bookings")
     public ResponseEntity<List<BookACarDto>> getBookings(){
-        System.out.println(adminService.getBookings());
         return ResponseEntity.ok(adminService.getBookings());
     }
 
@@ -68,5 +67,10 @@ public class AdminController {
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    @PostMapping("/bookings/{id}/{status}")
+    public void acceptBooking(@PathVariable Long id,@PathVariable String status){
+        adminService.respondBooking(id, status);
     }
 }
